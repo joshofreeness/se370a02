@@ -2,6 +2,7 @@ import shlex
 import os
 from subprocess import call
 import shutil
+import re
 
 __author__ = 'Joshua Free'
 
@@ -35,13 +36,13 @@ def main():
         elif split_arg[0] == commands[5]:
             execute_clear()
         elif split_arg[0] == commands[6]:
-            execute_create()
+            execute_create(split_arg)
         elif split_arg[0] == commands[7]:
             execute_add()
         elif split_arg[0] == commands[8]:
             execute_cat()
         elif split_arg[0] == commands[9]:
-            execute_delete()
+            execute_delete(split_arg)
         elif split_arg[0] == commands[10]:
             execute_dd()
         elif split_arg[0] == commands[11]:
@@ -55,11 +56,18 @@ def execute_pwd():
 
 
 def execute_cd(args):
-    # TODO: Check if the last if statement works and add cd ..
     temp_dir = current_dir
     global current_dir
-    if len(args)==1:
+    if len(args) == 1:
         temp_dir = '-'
+    elif args[1] == '..':
+        if len(current_dir) == 1:
+            pass
+        else:
+            dashes = [i.start() for i in re.finditer('-', current_dir)]
+            remove_char = dashes[-2]
+            temp_dir = temp_dir[:(remove_char - len(current_dir))]
+            temp_dir += '-'
     elif args[1][0] == '-':
         if args[1][-1] != '-':
             args[1] += '-'
@@ -100,10 +108,18 @@ def execute_clear():
     os.chdir("A2dir")
 
 
-
-def execute_create():
-    # TODO: execute create
-    print('create')
+def execute_create(args):
+    if len(args) == 1:
+        print('No file name')
+        return
+    elif args[1][-1] == '-':
+        print("Invalid file name")
+        return
+    elif args[1][0] == '-':
+        call(['touch', './'+args[1]])
+    else:
+        file_name = current_dir + args[1]
+        call(['touch', './'+file_name])
 
 
 def execute_add():
@@ -116,9 +132,27 @@ def execute_cat():
     print('cat')
 
 
-def execute_delete():
-    # TODO: execute delete
-    print('delete')
+def execute_delete(args):
+    if len(args) == 1:
+        print('No file name')
+        return
+    elif args[1][-1] == '-':
+        print("Invalid file name")
+        return
+    elif args[1][0] == '-':
+        if find_file(args[1]):
+            os.remove(args[1])
+        else:
+            print('No such file')
+            return
+    else:
+        file_name = current_dir + args[1]
+        if find_file(file_name):
+            os.remove(file_name)
+        else:
+            print('No such file')
+            return
+
 
 
 def execute_dd():
@@ -137,8 +171,6 @@ def find_file(full_file_name):
 
 def find_folder(full_folder_name):
     files = os.listdir('.')
-    print(full_folder_name)
-    print(files)
     return any(full_folder_name in file for file in files)
 
 
