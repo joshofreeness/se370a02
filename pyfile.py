@@ -7,6 +7,7 @@ __author__ = 'Joshua Free'
 
 current_dir = '-'
 
+
 def main():
     commands = ['pwd', 'cd', 'ls', 'rls', 'tree', 'clear', 'create', 'add', 'cat', 'delete', 'dd', 'quit']
 
@@ -54,7 +55,7 @@ def execute_pwd():
 
 
 def execute_cd(args):
-    # TODO: Check if the last if statement works
+    # TODO: Check if the last if statement works and add cd ..
     temp_dir = current_dir
     global current_dir
     if len(args)==1:
@@ -66,9 +67,9 @@ def execute_cd(args):
     else:
         if args[1][-1] != '-':
             args[1] += '-'
-        temp_dir = current_dir + args[1]
+        temp_dir = temp_dir + args[1]
 
-    if find_file(temp_dir):
+    if find_folder(temp_dir):
         current_dir = temp_dir
     else:
         print('No such directory')
@@ -136,7 +137,9 @@ def find_file(full_file_name):
 
 def find_folder(full_folder_name):
     files = os.listdir('.')
-    return any(full_folder_name for file in files)
+    print(full_folder_name)
+    print(files)
+    return any(full_folder_name in file for file in files)
 
 
 def string_to_list(line):
