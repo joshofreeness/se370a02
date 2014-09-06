@@ -61,7 +61,7 @@ def execute_pwd():
 
 
 def execute_cd(args):
-    #Get reference to the global variable of the current directory
+    #Get reference to the global variable of the current directory.
     global current_dir
     temp_dir = current_dir
     if len(args) == 1:
