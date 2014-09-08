@@ -303,7 +303,7 @@ def execute_delete(args):
 
 
 def execute_dd(args):
-    # TODO : doesn't handle dd xx (for some reason the - at end isn't working)
+    # TODO : doesn't handle dd xx (for some reason the - at end isn't working) (then change for the rest)
     if len(args) == 1:
         #If wrong input
         print('No folder name')
