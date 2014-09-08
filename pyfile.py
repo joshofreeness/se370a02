@@ -1,5 +1,6 @@
 import shlex
 import os
+import sys
 from subprocess import call
 import shutil
 import re
@@ -22,8 +23,16 @@ def main():
     os.chdir("A2dir")
 
     while True:
-        #Get argument/present prompt
-        arg = input('ffs> ')
+        redirected = not os.isatty(sys.stdin.fileno())
+
+        if redirected:
+            arg = sys.stdin.readline()
+            print('ffs> ' + arg, end='')
+            if not arg:
+                exit()
+        else:
+            #Get argument/present prompt
+            arg = input('ffs> ')
         #Split argument into an array of strings
         split_arg = string_to_list(arg)
 
@@ -102,7 +111,6 @@ def execute_cd(args):
 
 
 def execute_ls(args):
-    # TODO : change to handle folder name with "-" at end
     full_folder_name = current_dir
     list_printed = []
     if len(args) == 1:
@@ -121,9 +129,8 @@ def execute_ls(args):
                 print("f: " + thing)
                 list_printed.append(thing)
     elif args[1][-1] != '-':
-        #If given directory not file
-        print("Invalid folder name")
-        return
+        #If no - at end add it.
+        args[1] += '-'
     elif args[1][0] == '-':
         #If absolute path
         full_folder_name = args[1]
@@ -246,9 +253,8 @@ def execute_cat(args):
         print('No file name')
         return
     elif args[1][-1] == '-':
-        #Dir not file
-        print("Invalid file name")
-        return
+        #If no - at end add it.
+        args[1] += '-'
     elif args[1][0] == '-':
         #Absolute path
         if find_file(args[1]):
@@ -297,14 +303,16 @@ def execute_delete(args):
 
 
 def execute_dd(args):
+    # TODO : doesn't handle dd xx (for some reason the - at end isn't working)
     if len(args) == 1:
         #If wrong input
         print('No folder name')
         return
     elif args[1][-1] != '-':
-        #If not folder name
-        print("Invalid folder name")
-        return
+        #If no - at end add it.
+        print(args[1])
+        args[1] += '-'
+        print(args[1])
     elif args[1][0] == '-':
         #If absolute
         if find_folder(args[1]):
@@ -353,7 +361,6 @@ def string_to_list(line):
 def list_all_in_folder(full_folder_name):
     contents = os.listdir('.')
     final_list = []
-    # TODO : Finish this method to return a list of files and folders in current dir
     for file in contents:
         #If the folder name is longer than the file name
         if len(full_folder_name) >= len(file):
