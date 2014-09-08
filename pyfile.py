@@ -4,9 +4,9 @@ from subprocess import call
 import shutil
 import re
 
-__author__ = 'Joshua Free'
+__author__ = 'Joshua Free jfre553 2646577'
 
-#This is a global string that represents the current directory, it is an absolute path(in terms of the program)
+# This is a global string that represents the current directory, it is an absolute path(in terms of the program)
 #It also  always has a "-" on the end
 current_dir = '-'
 
@@ -29,29 +29,29 @@ def main():
 
         #Execute methods associated to built in commands
         if split_arg[0] == commands[0]:
-            execute_pwd()
+            execute_pwd()  # implemented
         elif split_arg[0] == commands[1]:
-            execute_cd(split_arg)
+            execute_cd(split_arg)  # implemented
         elif split_arg[0] == commands[2]:
             execute_ls()
         elif split_arg[0] == commands[3]:
-            execute_rls()
+            execute_rls()  # implemented
         elif split_arg[0] == commands[4]:
             execute_tree()
         elif split_arg[0] == commands[5]:
-            execute_clear()
+            execute_clear()  # implemented
         elif split_arg[0] == commands[6]:
-            execute_create(split_arg)
+            execute_create(split_arg)  # implemented
         elif split_arg[0] == commands[7]:
-            execute_add(split_arg)
+            execute_add(split_arg)  # implemented
         elif split_arg[0] == commands[8]:
-            execute_cat(split_arg)
+            execute_cat(split_arg)  # implemented
         elif split_arg[0] == commands[9]:
-            execute_delete(split_arg)
+            execute_delete(split_arg)  # implemented
         elif split_arg[0] == commands[10]:
-            execute_dd()
+            execute_dd(split_arg)
         elif split_arg[0] == commands[11]:
-            execute_quit()
+            execute_quit()  # implemented
         else:
             print('Input is not a recognised command')
 
@@ -107,7 +107,7 @@ def execute_ls():
 
 
 def execute_rls():
-    call(['ls','-l'])
+    call(['ls', '-l'])
 
 
 def execute_tree():
@@ -139,11 +139,11 @@ def execute_create(args):
         return
     elif args[1][0] == '-':
         #If absolute path
-        call(['touch', './'+args[1]])
+        call(['touch', './' + args[1]])
     else:
         #If relative path, then create absolute path by appending
         file_name = current_dir + args[1]
-        call(['touch', './'+file_name])
+        call(['touch', './' + file_name])
 
 
 def execute_add(args):
@@ -169,7 +169,7 @@ def execute_add(args):
             print('No such file')
             return
     else:
-        #If relative path, makeabsolute
+        #If relative path, make absolute
         file_name = current_dir + args[1]
         if find_file(file_name):
             #If file exists, append to it
@@ -236,10 +236,32 @@ def execute_delete(args):
             return
 
 
-
-def execute_dd():
-    # TODO: execute dd
-    print('dd')
+def execute_dd(args):
+    if len(args) == 1:
+        #If wrong input
+        print('No folder name')
+        return
+    elif args[1][-1] != '-':
+        #If not folder name
+        print("Invalid folder name")
+        return
+    elif args[1][0] == '-':
+        #If absolute
+        if find_folder(args[1]):
+            #If older exists, delete it
+            delete_folder(args[1])
+        else:
+            print('No such folder')
+            return
+    else:
+        #If relative
+        folder_name = current_dir + args[1]
+        if find_folder(folder_name):
+            #If folder exists delete it
+            delete_folder(folder_name)
+        else:
+            print('No such folder')
+            return
 
 
 def execute_quit():
@@ -267,6 +289,10 @@ def string_to_list(line):
     args = list(lexer)
     return args
 
+
+def delete_folder(full_folder_name):
+    print('deleted ' + full_folder_name)
+    # TODO: Delete all sub-folders and directories
 
 if __name__ == '__main__':
     main()
