@@ -291,8 +291,19 @@ def string_to_list(line):
 
 
 def delete_folder(full_folder_name):
-    print('deleted ' + full_folder_name)
-    # TODO: Delete all sub-folders and directories
+    #Get all file names
+    folders = os.listdir('.')
+    for folder in folders:
+        #If the folder name is longer than the file name
+        if len(full_folder_name) >= len(folder):
+            #print(folder + " less than " + full_folder_name)
+            continue
+        #If the folder name is not in the file name
+        if full_folder_name not in folder:
+            #print(full_folder_name + " not in " + folder)
+            continue
+        os.remove(folder)
+
 
 if __name__ == '__main__':
     main()
