@@ -33,7 +33,7 @@ def main():
         elif split_arg[0] == commands[1]:
             execute_cd(split_arg)  # implemented
         elif split_arg[0] == commands[2]:
-            execute_ls()
+            execute_ls(split_arg)
         elif split_arg[0] == commands[3]:
             execute_rls()  # implemented
         elif split_arg[0] == commands[4]:
@@ -103,9 +103,22 @@ def execute_cd(args):
 
 def execute_ls(args):
     full_folder_name = current_dir
+    list_printed = []
     if len(args) == 1:
         #If only one input
         full_folder_name = current_dir
+        contents = list_all_in_folder(full_folder_name)
+        for thing in contents:
+            thing = thing.replace(full_folder_name, '',1)
+            if '-' in thing:
+                thing = thing.split('-')[0]
+                if thing in list_printed:
+                    continue
+                print("d: " + thing)
+                list_printed.append(thing)
+            else:
+                print("f: " + thing)
+                list_printed.append(thing)
     elif args[1][-1] != '-':
         #If given directory not file
         print("Invalid folder name")
@@ -116,8 +129,17 @@ def execute_ls(args):
         if find_folder(full_folder_name):
             #If file exists then append
             contents = list_all_in_folder(full_folder_name)
-            # TODO PRINT RETURNED FILES
-            print(contents)
+            for thing in contents:
+                thing = thing.replace(full_folder_name, '',1)
+                if '-' in thing:
+                    thing = thing.split('-')[0]
+                    if thing in list_printed:
+                        continue
+                    print("d: " + thing)
+                    list_printed.append(thing)
+                else:
+                    print("f: " + thing)
+                    list_printed.append(thing)
         else:
             print('No such folder')
             return
@@ -127,8 +149,17 @@ def execute_ls(args):
         if find_folder(full_folder_name):
             #If file exists, append to it
             contents = list_all_in_folder(full_folder_name)
-            # TODO PRINT RETURNED FILES
-            print(contents)
+            for thing in contents:
+                thing = thing.replace(full_folder_name, '',1)
+                if '-' in thing:
+                    thing = thing.split('-')[0]
+                    if thing in list_printed:
+                        continue
+                    print("d: " + thing)
+                    list_printed.append(thing)
+                else:
+                    print("f: " + thing)
+                    list_printed.append(thing)
         else:
             print('No such folder')
             return
@@ -319,9 +350,21 @@ def string_to_list(line):
 
 
 def list_all_in_folder(full_folder_name):
-    files = os.listdir('.')
-    # TODO : Finish this mnethod to return a list of files and folders in current dir
-    return files
+    contents = os.listdir('.')
+    final_list = []
+    # TODO : Finish this method to return a list of files and folders in current dir
+    for file in contents:
+        #If the folder name is longer than the file name
+        if len(full_folder_name) >= len(file):
+            #print(file + " less than " + full_folder_name)
+            continue
+        #If the folder name is not in the file name
+        if full_folder_name not in file:
+            #print(full_folder_name + " not in " + file)
+            continue
+        final_list.append(file)
+
+    return final_list
 
 
 def delete_folder(full_folder_name):
