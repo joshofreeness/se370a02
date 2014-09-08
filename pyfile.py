@@ -102,6 +102,7 @@ def execute_cd(args):
 
 
 def execute_ls(args):
+    # TODO : change to handle folder name with "-" at end
     full_folder_name = current_dir
     list_printed = []
     if len(args) == 1:
