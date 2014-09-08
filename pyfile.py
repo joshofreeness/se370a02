@@ -101,9 +101,37 @@ def execute_cd(args):
         print('No such directory')
 
 
-def execute_ls():
-    # TODO: execute LS
-    print('ls')
+def execute_ls(args):
+    full_folder_name = current_dir
+    if len(args) == 1:
+        #If only one input
+        full_folder_name = current_dir
+    elif args[1][-1] != '-':
+        #If given directory not file
+        print("Invalid folder name")
+        return
+    elif args[1][0] == '-':
+        #If absolute path
+        full_folder_name = args[1]
+        if find_folder(full_folder_name):
+            #If file exists then append
+            contents = list_all_in_folder(full_folder_name)
+            # TODO PRINT RETURNED FILES
+            print(contents)
+        else:
+            print('No such folder')
+            return
+    else:
+        #If relative path, make absolute
+        full_folder_name = current_dir + args[1]
+        if find_folder(full_folder_name):
+            #If file exists, append to it
+            contents = list_all_in_folder(full_folder_name)
+            # TODO PRINT RETURNED FILES
+            print(contents)
+        else:
+            print('No such folder')
+            return
 
 
 def execute_rls():
@@ -288,6 +316,12 @@ def string_to_list(line):
     lexer.wordchars += '#$+-,./?@^='
     args = list(lexer)
     return args
+
+
+def list_all_in_folder(full_folder_name):
+    files = os.listdir('.')
+    # TODO : Finish this mnethod to return a list of files and folders in current dir
+    return files
 
 
 def delete_folder(full_folder_name):
