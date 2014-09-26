@@ -183,7 +183,7 @@ def execute_rls():
 def execute_tree(args):
     full_folder_name = current_dir
     if len(args) == 1:
-        print(execute_tree_recursion(full_folder_name))
+        execute_tree_recursion(full_folder_name, 0)
         return
     if args[1][-1] != '-':
         #If no - at end add it.
@@ -193,7 +193,7 @@ def execute_tree(args):
         #If absolute path
         full_folder_name = args[1]
         if find_folder(full_folder_name):
-            print(execute_tree_recursion(full_folder_name))
+            execute_tree_recursion(full_folder_name, 0)
         else:
             print('No such folder')
             return
@@ -201,14 +201,33 @@ def execute_tree(args):
         #If relative path, make absolute
         full_folder_name = current_dir + args[1]
         if find_folder(full_folder_name):
-            print(execute_tree_recursion(full_folder_name))
+            execute_tree_recursion(full_folder_name, 0)
         else:
             print('No such folder')
             return
 
 
-def execute_tree_recursion(string):
-    return string
+def execute_tree_recursion(folder, indent):
+    folders_to_go = []
+    print('      '*indent + folder)
+    print('      '*indent + '='*len(folder))
+    contents = list_all_in_folder(folder)
+    for thing in contents:
+        thing = thing.replace(folder, '',1)
+        if '-' in thing:
+            rep_thing = thing.split('-', 1)[0] + '-'
+            if rep_thing in folders_to_go:
+                pass
+            else:
+                folders_to_go.append(rep_thing)
+        else:
+            print('      '*indent + thing)
+
+    indent += 1
+    for x in folders_to_go:
+        the_next = folder + x
+        execute_tree_recursion(the_next, indent)
+    return
 
 
 def execute_clear():
