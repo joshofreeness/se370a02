@@ -46,7 +46,7 @@ def main():
         elif split_arg[0] == commands[3]:
             execute_rls()  # implemented
         elif split_arg[0] == commands[4]:
-            execute_tree()
+            execute_tree(split_arg)
         elif split_arg[0] == commands[5]:
             execute_clear()  # implemented
         elif split_arg[0] == commands[6]:
@@ -128,10 +128,13 @@ def execute_ls(args):
             else:
                 print("f: " + thing)
                 list_printed.append(thing)
-    elif args[1][-1] != '-':
+        return
+
+    if args[1][-1] != '-':
         #If no - at end add it.
         args[1] += '-'
-    elif args[1][0] == '-':
+
+    if args[1][0] == '-':
         #If absolute path
         full_folder_name = args[1]
         if find_folder(full_folder_name):
@@ -177,9 +180,35 @@ def execute_rls():
     call(['ls', '-l'])
 
 
-def execute_tree():
-    # TODO: execute tree
-    print('tree')
+def execute_tree(args):
+    full_folder_name = current_dir
+    if len(args) == 1:
+        print(execute_tree_recursion(full_folder_name))
+        return
+    if args[1][-1] != '-':
+        #If no - at end add it.
+        args[1] += '-'
+
+    if args[1][0] == '-':
+        #If absolute path
+        full_folder_name = args[1]
+        if find_folder(full_folder_name):
+            print(execute_tree_recursion(full_folder_name))
+        else:
+            print('No such folder')
+            return
+    else:
+        #If relative path, make absolute
+        full_folder_name = current_dir + args[1]
+        if find_folder(full_folder_name):
+            print(execute_tree_recursion(full_folder_name))
+        else:
+            print('No such folder')
+            return
+
+
+def execute_tree_recursion(string):
+    return string
 
 
 def execute_clear():
