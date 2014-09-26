@@ -300,10 +300,12 @@ def execute_cat(args):
         #Wrong number of inputs
         print('No file name')
         return
-    elif args[1][-1] == '-':
+
+    if args[1][-1] == '-':
         #If no - at end add it.
         args[1] += '-'
-    elif args[1][0] == '-':
+        
+    if args[1][0] == '-':
         #Absolute path
         if find_file(args[1]):
             with open(args[1], "r") as my_file:
@@ -351,17 +353,18 @@ def execute_delete(args):
 
 
 def execute_dd(args):
-    # TODO : doesn't handle dd xx (for some reason the - at end isn't working) (then change for the rest)
     if len(args) == 1:
         #If wrong input
         print('No folder name')
         return
-    elif args[1][-1] != '-':
+
+    if args[1][-1] != '-':
         #If no - at end add it.
         print(args[1])
         args[1] += '-'
         print(args[1])
-    elif args[1][0] == '-':
+
+    if args[1][0] == '-':
         #If absolute
         if find_folder(args[1]):
             #If older exists, delete it
