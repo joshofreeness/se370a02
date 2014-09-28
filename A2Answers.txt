@@ -1,0 +1,14 @@
+1. On the version of Linux in the lab, what is the maximum length of a file name?
+
+There appears to be multiple types of filesystems running on the lab computers, however the file system at //files.auckland.ac.nz/MyHome/ is CIFS (Say how long)
+
+
+2. What advantages does the flat file system have over traditional hierarchical file systems? Describe the implementation of one command which is easier with the flat system than with a traditional hierarchical system.
+
+
+
+3. What disadvantages does the flat file system have over traditional hierarchical file systems?
+
+
+
+4. Describe a way to minimise one of the disadvantages you mentioned in question 3.
