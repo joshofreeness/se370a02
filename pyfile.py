@@ -304,7 +304,7 @@ def execute_cat(args):
     if args[1][-1] == '-':
         #If no - at end add it.
         args[1] += '-'
-        
+
     if args[1][0] == '-':
         #Absolute path
         if find_file(args[1]):
