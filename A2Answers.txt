@@ -1,14 +1,17 @@
-1. On the version of Linux in the lab, what is the maximum length of a file name?
+Joshua Free 2646577 jfre553
 
-There appears to be multiple types of filesystems running on the lab computers, however the file system at //files.auckland.ac.nz/MyHome/ is CIFS (Say how long)
+1. On the version of Linux in the lab, what is the maximum length of a file name?
 
+There appears to be multiple types of filesystems running on the lab computers, however the file system at //files.auckland.ac.nz/MyHome/ is CIFS. The length of a file name can be 255 characters long.
 
 2. What advantages does the flat file system have over traditional hierarchical file systems? Describe the implementation of one command which is easier with the flat system than with a traditional hierarchical system.
 
-
+Advantages of a flat file system is mainly the simplicity of it. You may also save some disk space by never needing any folders written to disk (apart from in the file name or other approach). A command which is much easier in a flat file system is the cd command (change directory), because the implementation of this is basically changing a string that represents the current directory.
 
 3. What disadvantages does the flat file system have over traditional hierarchical file systems?
 
-
+Organisation suffers in a flat file system, and may be hard for a common user to deal with. If the flat file system is to be displayed as if it is not in a flat structure this will require more computational overhead. It may also arise to security problems, with no way of keeping kernel and user files separate.
 
 4. Describe a way to minimise one of the disadvantages you mentioned in question 3.
+
+A way to minimise the security concern in question 3 could be to add a bit to every file to determine if it is for the kernel or not, or to have two file systems on the one computer, one for the user and one for the kernel. 
